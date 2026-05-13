@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使い方ガイド — BlueMouse</title>
+<meta name="description" content="BlueMouse のセットアップ手順、各モードの使い方、レシーバー側の操作方法、トラブルシューティングをまとめたガイドです。">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="guide.css">
+</head>
+<body class="guide">
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="topbar__brand" href="./">
+      <img src="icon-256.png" alt="" width="28" height="28">
+      <span>BlueMouse</span>
+    </a>
+    <nav class="topbar__nav">
+      <a href="./">ホーム</a>
+      <a href="https://github.com/piggest/BlueMouse/releases/latest">ダウンロード</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar__inner">
+      <p class="sidebar__title">目次</p>
+      <nav class="toc">
+        <a href="#overview">はじめに</a>
+        <a href="#requirements">動作環境</a>
+        <a href="#setup">セットアップ</a>
+        <a href="#touchpad">タッチパッドモード</a>
+        <a href="#keyboard">キーボードモード</a>
+        <a href="#trust">デバイス信頼</a>
+        <a href="#receiver-mac">Mac レシーバー</a>
+        <a href="#receiver-win">Windows レシーバー</a>
+        <a href="#tips">使いこなしのヒント</a>
+        <a href="#troubleshoot">トラブルシューティング</a>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <section id="overview" class="doc">
+      <h1>使い方ガイド</h1>
+      <p class="lead">BlueMouse は、iPhone を Bluetooth LE 経由で Mac や Windows のタッチパッド・キーボードとして使えるアプリです。このページでは、各画面の操作方法と、つまずきやすいポイントをまとめます。</p>
+
+      <h2>構成</h2>
+      <p>BlueMouse は 2 つのアプリで動作します。</p>
+      <ul>
+        <li><strong>iPhone アプリ</strong>　BLE ペリフェラルとして広告し、画面のタッチをイベントとして送ります。</li>
+        <li><strong>レシーバー（Mac / Windows）</strong>　BLE セントラルとして iPhone を見つけ、受け取ったイベントを OS のマウス・キーボード入力に変換します。</li>
+      </ul>
+    </section>
+
+    <section id="requirements" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </span>
+        <div>
+          <h2>動作環境</h2>
+          <p class="doc__lede">BlueMouse の利用に必要な OS バージョンと、Bluetooth まわりの要件です。</p>
+        </div>
+      </header>
+
+      <table class="kv">
+        <tbody>
+          <tr><th>iPhone</th><td>iOS 16 以降。Bluetooth が有効であること。</td></tr>
+          <tr><th>Mac レシーバー</th><td>macOS 13 Ventura 以降。Apple Silicon / Intel どちらにも対応。</td></tr>
+          <tr><th>Windows レシーバー</th><td>Windows 10 1809 以降 (BLE 対応の Bluetooth アダプタが必要)。</td></tr>
+          <tr><th>通信</th><td>Bluetooth LE のみを使用。Wi-Fi、USB ケーブル、専用ドングルは不要。</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <p><strong>注意</strong>　Windows 環境では、古い Bluetooth アダプタが BLE に対応していないことがあります。デバイスマネージャで「Bluetooth LE」関連のスタックが見えるか確認してください。</p>
+      </div>
+    </section>
+
+    <section id="setup" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg>
+        </span>
+        <div>
+          <h2>セットアップ</h2>
+          <p class="doc__lede">iPhone とレシーバー双方の初期設定の流れです。</p>
+        </div>
+      </header>
+
+      <h3>1. iPhone アプリのインストール</h3>
+      <ul>
+        <li>BlueMouse の iPhone アプリをインストールし、起動してください。</li>
+        <li>初回起動時、Bluetooth の利用許可ダイアログが表示されます。許可してください。</li>
+      </ul>
+
+      <h3>2. レシーバーのインストール</h3>
+      <ul>
+        <li>使用する OS に対応するレシーバーをダウンロードしてください。</li>
+        <li>Mac の場合: <code>BlueMouseReceiver.app</code> を <code>/Applications</code> に配置します。</li>
+        <li>Windows の場合: 配布されたインストーラまたは <code>.exe</code> をセットアップしてください。</li>
+      </ul>
+
+      <h3>3. 初回接続</h3>
+      <ul>
+        <li>レシーバーを起動すると、メニューバー（または通知領域）に BlueMouse のアイコンが表示されます。</li>
+        <li>iPhone アプリ側を開くと、レシーバーが自動でスキャンを始め、新しい端末として検出されます。</li>
+        <li>レシーバーのメニューから対象 iPhone を選び、「許可」してください。一度許可した端末は次回以降自動で再接続します。</li>
+      </ul>
+    </section>
+
+    <section id="touchpad" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><circle cx="12" cy="17.5" r="1"/></svg>
+        </span>
+        <div>
+          <h2>タッチパッドモード</h2>
+          <p class="doc__lede">iPhone の画面をマルチタッチのトラックパッドとして使います。</p>
+        </div>
+      </header>
+
+      <h3>基本ジェスチャー</h3>
+      <table class="hotkeys">
+        <thead><tr><th>操作</th><th>動作</th></tr></thead>
+        <tbody>
+          <tr><td>1 本指でなぞる</td><td>カーソルを移動します。</td></tr>
+          <tr><td>1 本指で軽くタップ</td><td>左クリック。</td></tr>
+          <tr><td>2 本指で軽くタップ</td><td>右クリック。</td></tr>
+          <tr><td>2 本指で上下になぞる</td><td>縦スクロール。</td></tr>
+          <tr><td>2 本指で左右になぞる</td><td>横スクロール。</td></tr>
+          <tr><td>長押し → そのまま移動</td><td>ドラッグ操作。</td></tr>
+        </tbody>
+      </table>
+
+      <h3>カーソル加速</h3>
+      <p>指の動きが速いほどカーソル移動量が大きくなる加速カーブを採用しています。細かなピクセル単位の作業から、画面の端まで大きく動かす操作まで、同じ感覚で行えます。</p>
+
+      <h3>中央ボタン領域</h3>
+      <p>画面下部には中央ボタン用の領域があります。タップ・長押し・ダブルタップに、用途に応じた追加クリックを割り当てられます。</p>
+
+      <h3>スクロール専用領域</h3>
+      <p>画面右端には縦スクロール専用、下端には横スクロール専用の細い帯があります。スワイプ操作と区別せずに、確実にスクロールを行いたい場面で活用してください。</p>
+    </section>
+
+    <section id="keyboard" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6 10h.01M9 10h.01M12 10h.01M15 10h.01M18 10h.01M7 14h10"/></svg>
+        </span>
+        <div>
+          <h2>キーボードモード</h2>
+          <p class="doc__lede">iPhone のソフトウェアキーボードで PC に文字入力できます。</p>
+        </div>
+      </header>
+
+      <h3>切り替え方</h3>
+      <ul>
+        <li>iPhone アプリの画面下部にあるモード切替から「キーボード」を選びます。</li>
+        <li>入力したテキストはリアルタイムにレシーバー側へ送信され、PC のフォーカス位置に挿入されます。</li>
+      </ul>
+
+      <h3>日本語入力</h3>
+      <p>iPhone の標準 IME がそのまま使えるため、PC 側の IME 環境に左右されません。日本語キーボードを持っていない海外メーカーの PC でも、iPhone があれば日本語入力が可能になります。</p>
+
+      <h3>特殊キーの送信</h3>
+      <p>Return キーや Backspace は、iPhone のキーボードのものをそのまま PC 側に送ります。BackspaceDetectingTextField により、変換中の文字消去も正確に伝達されます。</p>
+
+      <div class="callout callout--note">
+        <p>キーボードモードでは、PC 側に <strong>HID Keyboard</strong> として動作するため、ログインプロンプトや UAC ダイアログでも文字入力に利用できます。</p>
+      </div>
+    </section>
+
+    <section id="trust" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <div>
+          <h2>デバイス信頼</h2>
+          <p class="doc__lede">許可した iPhone だけが接続できる仕組みです。</p>
+        </div>
+      </header>
+
+      <h3>許可と拒否</h3>
+      <ul>
+        <li>初めて検出された iPhone は <strong>未知の端末</strong> として表示され、操作はブロックされます。</li>
+        <li>レシーバーのメニューから「許可」を選ぶと、その iPhone はデバイス ID として記録され、以降は自動で接続が確立します。</li>
+        <li>「拒否」を選んだ iPhone は記録され、明示的に解除するまで再接続を試みません。</li>
+      </ul>
+
+      <h3>デバイス ID 方式</h3>
+      <p>BlueMouse は MAC アドレスではなくアプリ側で発行する一意のデバイス ID で iPhone を識別します。OS による BLE アドレスのプライバシー対策で接続が不安定になることを避け、再接続の信頼性を高めています。</p>
+
+      <h3>許可済みリストの確認</h3>
+      <p>レシーバーのメニューから、許可済み・拒否済みの iPhone 一覧をいつでも確認できます。誤って許可してしまった端末は、メニューから外すと次回以降は再び未知扱いに戻ります。</p>
+    </section>
+
+    <section id="receiver-mac" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 00-3 3v1H7a3 3 0 00-3 3v9a3 3 0 003 3h10a3 3 0 003-3V9a3 3 0 00-3-3h-2V5a3 3 0 00-3-3z"/></svg>
+        </span>
+        <div>
+          <h2>Mac レシーバー</h2>
+          <p class="doc__lede">macOS のメニューバーに常駐するレシーバーアプリです。</p>
+        </div>
+      </header>
+
+      <h3>メニュー項目</h3>
+      <ul>
+        <li>接続状態の表示（接続中の iPhone 名 / スキャン中 / 未接続）。</li>
+        <li>許可済みデバイスの一覧と切り替え。</li>
+        <li>未知の端末への許可・拒否操作。</li>
+        <li>環境設定、終了。</li>
+      </ul>
+
+      <h3>権限</h3>
+      <p>初回起動時に <strong>アクセシビリティ</strong> 権限の許可を求められます。これは PC 側でカーソル移動とクリック・キーストロークを発行するために必要です。</p>
+
+      <h3>カーソル精密移動</h3>
+      <p>Mac レシーバーは <code>SetCursorPos</code> 相当の API を用いてカーソルを直接動かし、整数座標への丸めによるブレを最小化しています。</p>
+    </section>
+
+    <section id="receiver-win" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l8-1v8H3zM12 4l9-1v9h-9zM3 13h8v8l-8-1zM12 13h9v9l-9-1z"/></svg>
+        </span>
+        <div>
+          <h2>Windows レシーバー</h2>
+          <p class="doc__lede">Windows のシステムトレイに常駐するレシーバーアプリです。</p>
+        </div>
+      </header>
+
+      <h3>機能</h3>
+      <ul>
+        <li>トレイアイコンが接続状態に応じて変化します。</li>
+        <li>接続通知・切断通知をトーストで表示します。</li>
+        <li>ログイン時に自動起動するオプションを用意しています。</li>
+        <li>動作ログをファイルに出力し、トラブルシューティングに利用できます。</li>
+        <li>バージョン情報をメニューから確認できます。</li>
+      </ul>
+
+      <h3>カーソル移動</h3>
+      <p><code>SetCursorPos</code> を使ってカーソルを動かし、サブピクセル単位の累積誤差を排除しています。</p>
+
+      <h3>キー送信</h3>
+      <p>HID Usage Code を Windows のスキャンコードへ変換するマップにより、日本語キーボード固有のキーや、ファンクションキーも正しく送信されます。</p>
+    </section>
+
+    <section id="tips" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a7 7 0 00-4 12c1 1 1.5 2 1.5 3h5C14.5 17 15 16 16 15a7 7 0 00-4-12z"/></svg>
+        </span>
+        <div>
+          <h2>使いこなしのヒント</h2>
+          <p class="doc__lede">日常的に便利な使い方の例です。</p>
+        </div>
+      </header>
+
+      <ul>
+        <li><strong>プレゼン用リモコン</strong>　PC をプロジェクタへ繋いだまま、iPhone から手元操作。</li>
+        <li><strong>キーボード非搭載の Mac mini / NUC</strong>　常設のマウス・キーボードを置く場所がない PC の操作に。</li>
+        <li><strong>離れた場所からの操作</strong>　BLE の届く範囲（数メートル）であれば、ソファや机から離れて使えます。</li>
+        <li><strong>日本語入力環境のない PC</strong>　海外向け Windows でも iPhone の IME で日本語入力可能。</li>
+      </ul>
+    </section>
+
+    <section id="troubleshoot" class="doc">
+      <header class="doc__header">
+        <span class="doc__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        </span>
+        <div>
+          <h2>トラブルシューティング</h2>
+          <p class="doc__lede">よくある問題と対処法です。</p>
+        </div>
+      </header>
+
+      <h3>iPhone が検出されない</h3>
+      <ul>
+        <li>iPhone 側の Bluetooth が ON になっているか確認してください。</li>
+        <li>iPhone アプリがフォアグラウンドで起動しているか確認してください（バックグラウンドではアドバタイズを停止します）。</li>
+        <li>レシーバーの「再スキャン」を実行してください。</li>
+      </ul>
+
+      <h3>接続するが操作できない</h3>
+      <ul>
+        <li>Mac の場合、システム設定 &gt; プライバシーとセキュリティ &gt; アクセシビリティ で BlueMouseReceiver が許可されているか確認してください。</li>
+        <li>Windows の場合、トレイアイコンが「接続中」状態になっているか確認してください。</li>
+      </ul>
+
+      <h3>切断・再接続を繰り返す</h3>
+      <ul>
+        <li>BLE の電波干渉（多数の Bluetooth 機器、強い Wi-Fi 5GHz など）を疑ってください。</li>
+        <li>レシーバーを一度終了し、再起動することで内部状態がリセットされます。</li>
+      </ul>
+
+      <h3>カーソルが少しずれる・震える</h3>
+      <p>最新版では整数座標への直接配置によりこの問題を解消しています。旧バージョンを使用している場合は、最新リリースに更新してください。</p>
+    </section>
+
+    <p class="back-to-top"><a href="#overview">↑ 先頭へ戻る</a></p>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>© BlueMouse</p>
+    <p><a href="./">ホーム</a> · <a href="https://github.com/piggest/BlueMouse/releases">Releases</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const links = document.querySelectorAll('.toc a');
+  const map = new Map();
+  links.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) map.set(el, a);
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const link = map.get(e.target);
+      if (!link) return;
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -65% 0px', threshold: 0 });
+  map.forEach((_, el) => observer.observe(el));
+})();
+</script>
+</body>
+</html>
